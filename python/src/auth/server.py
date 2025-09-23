@@ -13,7 +13,7 @@ server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
 
 @server.route("/login", methods=["POST"])
 def login():
-    auth = request.authorization
+    auth = request.authorization #basic authentication 
     if not auth:
         return "missing credentials", 401
     
@@ -43,7 +43,7 @@ def validate():
     if not encoded_jwt:
         return "missing credentials", 401
     
-    encoded_jwt = encoded_jwt.split(" ")[1]
+    encoded_jwt = encoded_jwt.split(" ")[1] #split because of "Bearer <token>"
     
     try:
         decoded = jwt.decode(
