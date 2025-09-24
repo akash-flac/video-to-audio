@@ -61,6 +61,8 @@ def validate():
     return decoded, 200
 
 # createJWT function creates a JWT token with the username, expiration time, issued at time and admin status as claims
+# authz is a boolean indicating whether the user is an admin or not, if it's True, the user gets access to all of the endpoints, 
+# and so "admin" will be True for all users logging in to the system
 def createJWT(username, secret, authz):
     return jwt.encode(
         {
