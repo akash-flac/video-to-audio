@@ -9,7 +9,7 @@ from flask_pymongo import PyMongo
 from auth import validate
 from auth_svc import access
 from storage import util
-
+ 
 # creating a flask application instance
 server = Flask(__name__)
 
@@ -20,12 +20,23 @@ mongo = PyMongo(server)
 
 fs = gridfs.GridFS(mongo.db)
 
-# setting up RabbitMQ connection 
+# setting up RabbitMQ connection
 connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
 channel = connection.channel()
 
+# login route that communicates with auth service to log in a user and assign a token
 @server.route("/login", methods=["POST"])
 def login():
+    # access.login returns a tuple, first item will go to token, second item will go to err(representing error)
     token, err = access.login(request)
-    
 
+    if not err:
+        return token 
+    else:
+        return err 
+
+# when a user uploads a video, they need to have a token which will be validated by the auth service
+@server.route("/upload", methods=["POST"])
+def upload():
+    # access resolves to a JSON formatted string containing the payload (claims)
+    access, err = validate.token(request)
