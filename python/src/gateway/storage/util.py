@@ -16,7 +16,7 @@ def upload(f, fs, channel, access):
         "mp3_fid": None,
         "username": access["username"],
     }
-
+    
     try:
         # publish the message to the rabbitmq queue
         channel.basic_publish(
