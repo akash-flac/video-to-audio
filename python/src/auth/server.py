@@ -11,7 +11,7 @@ server.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
 server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
 server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
 server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
-server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
+server.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
 
 
 @server.route("/login", methods=["POST"])
@@ -42,7 +42,7 @@ def login():
 
 @server.route("/validate", methods=["POST"])
 def validate():
-    encoded_jwt = request.headers["Authorization"]
+    encoded_jwt = request.headers.get("Authorization")
 
     if not encoded_jwt:
         return "missing credentials", 401
@@ -69,7 +69,7 @@ def createJWT(username, secret, authz):
             "username": username,
             "exp": datetime.datetime.now(tz=datetime.timezone.utc)
             + datetime.timedelta(days=1),
-            "iat": datetime.datetime.utcnow(),
+            "iat": datetime.datetime.now(tz=datetime.timezone.utc),
             "admin": authz,
         },
         secret,

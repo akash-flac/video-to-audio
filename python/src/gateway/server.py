@@ -13,7 +13,7 @@ from storage import util
 # creating a flask application instance
 server = Flask(__name__)
 
-server.config("MONGO_URI") = "mongodb://host.minikube.internal:27017/videos"
+server.config["MONGO_URI"] = "mongodb://host.minikube.internal:27017/videos"
 
 # initializing PyMongo with the Flask app instance
 mongo = PyMongo(server)
@@ -43,7 +43,8 @@ def login():
 def upload():
     # access resolves to a JSON formatted string containing the payload (claims)
     access, err = validate.token(request)
-
+    if err:
+        return err
     access = json.loads(access)
 
     # access is True if the user is an admin(admin attribute is True in the token payload), False otherwise
