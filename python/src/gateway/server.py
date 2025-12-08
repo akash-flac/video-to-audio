@@ -2,18 +2,33 @@ import os
 import gridfs
 import pika
 import json
-from flask import Flask, request
+from flask import Flask, request, send_file
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 
 # custom modules
 from auth import validate
 from auth_svc import access
 from storage import util
 
+
 # creating a flask application instance
 server = Flask(__name__)
 
 server.config["MONGO_URI"] = "mongodb://host.minikube.internal:27017/videos"
+
+# mongo_video = PyMongo(
+#     server, 
+#     uri = "mongodb://host.minikube.internal:27017/videos"
+# )
+
+# mongo_mp3 = PyMongo(
+#     server, 
+#     uri = "mongodb://host.minikube.internal:27017/mp3s"
+# )
+
+# fs_videos = gridfs.GridFS(mongo_video.db)
+# fs_mp3s = gridfs.GridFS(mongo_mp3.db)
 
 # initializing PyMongo with the Flask app instance
 mongo = PyMongo(server)
