@@ -61,6 +61,7 @@ htmlcov/
 tmp/
 temp/
 
+*.stackdump
 # Kubernetes secrets (if storing locally - be careful!)
 # Uncomment if you want to ignore secret manifests
 # **/manifests/secret.yaml
